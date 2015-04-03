@@ -22,8 +22,8 @@ post "/upload" do
       f.write(params['audio'][:tempfile].read)
     end
 
-    `ffmpeg -i uploads/#{uuid}.webm uploads/#{uuid}.mp4`
-    `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/#{uuid}.wav -c:v copy -c:a aac -strict experimental public/videos/#{uuid}.mp4`
+    #`ffmpeg -i uploads/#{uuid}.webm uploads/#{uuid}.mp4`
+    #`ffmpeg -i uploads/#{uuid}.mp4 -i uploads/#{uuid}.wav -c:v copy -c:a aac -strict experimental public/videos/#{uuid}.mp4`
   else
 
     #audio
@@ -32,8 +32,8 @@ post "/upload" do
       f.write(params['audio'][:tempfile].read)
     end
 
-    `ffmpeg -i uploads/#{uuid}.webm uploads/#{uuid}.mp4`
-    `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/firefox_audio.webm -c:v copy -c:a aac -strict experimental public/videos/#{uuid}.mp4`       
+    #`ffmpeg -i uploads/#{uuid}.webm uploads/#{uuid}.mp4`
+    #`ffmpeg -i uploads/#{uuid}.mp4 -i uploads/firefox_audio.webm -c:v copy -c:a aac -strict experimental public/videos/#{uuid}.mp4`       
   end
   uuid
 end

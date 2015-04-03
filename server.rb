@@ -1,6 +1,5 @@
 require "sinatra"
 require "uuid"
-#require "pry"
 
 get "/" do
   erb :index

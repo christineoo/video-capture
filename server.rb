@@ -70,6 +70,7 @@ post "/upload" do
       f.write(params['audio'][:tempfile].read)
     end
 
+    puts `ls`
     `ffmpeg -i uploads/#{uuid}.#{video_type} uploads/#{uuid}.mp4`
     `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/"#{uuid}_1".#{audio_type} -c:v copy #{directory}/#{uuid}.mp4`
 

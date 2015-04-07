@@ -68,8 +68,8 @@ post "/upload" do
       f.write(params['audio'][:tempfile].read)
     end
 
-    `ffmpeg -i uploads/#{uuid}.webm uploads/#{uuid}.mp4`
-    `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/"#{uuid}_1".webm -c:v copy -c:a aac -strict experimental public/videos/#{uuid}.mp4`
+    `ffmpeg -i uploads/#{uuid}.#{video_type} uploads/#{uuid}.mp4`
+    `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/"#{uuid}_1".#{audio_type} -c:v copy public/videos/#{uuid}.mp4`
 
     f = File.new("public/videos/#{uuid}.mp4", "r")
     resp_mp4 = client.put_file("#{uuid}.mp4", f)

@@ -53,6 +53,7 @@ post "/upload" do
    # `ffmpeg -i #{mp4_name} -i #{audio_name} -c:v copy -c:a aac -strict #{resp_mp4['path']}`
    # f = File.new("#{uuid}.mp4", "r")
    # resp_mp4 = client.put_file("#{uuid}.mp4", f)
+    puts `ls public/videos`
     `ffmpeg -i uploads/#{uuid}.webm uploads/#{uuid}.mp4`
     `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/#{uuid}.wav -c:v copy -c:a aac -strict experimental public/videos/#{uuid}.mp4`
 

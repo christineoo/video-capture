@@ -62,14 +62,14 @@ post "/upload" do
 
     #audio
     audio_type = params['audio'][:type].split("/").last
-    resp_audio = client.put_file("#{uuid}+_1.#{audio_type}", params['audio'][:tempfile])
+    resp_audio = client.put_file("#{uuid}_1.#{audio_type}", params['audio'][:tempfile])
 
-    File.open("uploads/#{uuid}+_1.#{audio_type}", "w") do |f|
+    File.open("uploads/#{uuid}_1.#{audio_type}", "w") do |f|
       f.write(params['audio'][:tempfile].read)
     end
 
     `ffmpeg -i uploads/#{uuid}.webm uploads/#{uuid}.mp4`
-    `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/"#{uuid}+_1".webm -c:v copy -c:a aac -strict experimental public/videos/#{uuid}.mp4`
+    `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/"#{uuid}_1".webm -c:v copy -c:a aac -strict experimental public/videos/#{uuid}.mp4`
 
     f = File.new("public/videos/#{uuid}.mp4", "r")
     resp_mp4 = client.put_file("#{uuid}.mp4", f)

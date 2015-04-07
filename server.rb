@@ -3,13 +3,13 @@ require 'uuid'
 require 'dropbox_sdk'
 
 # Get your app key and secret from the Dropbox developer website
-APP_KEY = 'xuo8juy06wudsrb'
-APP_SECRET = 'zkivqktcmxxe18u'
+APP_KEY = 'tde962n2ap70xcs'
+APP_SECRET = '3isv4rd0xkhf1hq'
 
 #flow = DropboxOAuth2FlowNoRedirect.new(APP_KEY, APP_SECRET)
 #authorize_url = flow.start()
 
-client = DropboxClient.new('Nz4wlsosv6kAAAAAAAAz-CjJF_k7DAXMNRKkAdg2dW78xbwZHvrwdNMwPXKJftWF')
+client = DropboxClient.new('HF7_1tzX7iAAAAAAAAAABSt1yx6Z1z206UAYHoPDi50ZpxBg7wn8PLD_xkxyTrYl')
 puts "linked account:", client.account_info().inspect
 
 get "/" do
@@ -62,14 +62,18 @@ post "/upload" do
 
     #audio
     audio_type = params['audio'][:type].split("/").last
-    resp_audio = client.put_file("firefox_audio.#{audio_type}", params['audio'][:tempfile])
+    resp_audio = client.put_file("#{uuid}+_1.#{audio_type}", params['audio'][:tempfile])
 
-    File.open("uploads/firefox_audio.#{audio_type}", "w") do |f|
+    File.open("uploads/#{uuid}+_1.#{audio_type}", "w") do |f|
       f.write(params['audio'][:tempfile].read)
     end
 
     `ffmpeg -i uploads/#{uuid}.webm uploads/#{uuid}.mp4`
-    `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/firefox_audio.webm -c:v copy -c:a aac -strict experimental public/videos/#{uuid}.mp4`
+    `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/"#{uuid}+_1".webm -c:v copy -c:a aac -strict experimental public/videos/#{uuid}.mp4`
+
+    f = File.new("public/videos/#{uuid}.mp4", "r")
+    resp_mp4 = client.put_file("#{uuid}.mp4", f)
+
   end
   uuid
 end

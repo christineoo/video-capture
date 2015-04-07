@@ -59,6 +59,8 @@ post "/upload" do
     f = File.new("public/videos/#{uuid}.mp4", "r")
     resp_mp4 = client.put_file("#{uuid}.mp4", f)
   else
+    directory = "#{settings.root}/public/videos"
+    puts directory
 
     #audio
     audio_type = params['audio'][:type].split("/").last
@@ -69,9 +71,9 @@ post "/upload" do
     end
 
     `ffmpeg -i uploads/#{uuid}.#{video_type} uploads/#{uuid}.mp4`
-    `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/"#{uuid}_1".#{audio_type} -c:v copy public/videos/#{uuid}.mp4`
+    `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/"#{uuid}_1".#{audio_type} -c:v copy #{directory}/#{uuid}.mp4`
 
-    f = File.new("public/videos/#{uuid}.mp4", "r")
+    f = File.new("#{directory}/#{uuid}.mp4", "r")
     resp_mp4 = client.put_file("#{uuid}.mp4", f)
 
   end

@@ -31,7 +31,6 @@ post "/upload" do
     #audio
     audio_type = params['audio'][:type].split("/").last
     resp_audio = client.put_file("#{uuid}.#{audio_type}", params['audio'][:tempfile])
-    #resp_mp4 = client.put_file("#{uuid}.mp4", "")
 
     File.open("uploads/#{uuid}.#{audio_type}", "w") do |f|
       f.write(params['audio'][:tempfile].read)
@@ -39,30 +38,18 @@ post "/upload" do
 
     video_name = resp_video['path'].split("/").last
     audio_name = resp_audio['path'].split("/").last
-    #mp4_name = resp_mp4['path'].split("/").last
 
     video_content = client.get_file(resp_video['path'])
     open(video_name, 'w') {|f| f.puts video_content }
     audio_content = client.get_file(resp_audio['path'])
     open(audio_name, 'w') {|f| f.puts audio_content }
 
-   # `ffmpeg -i #{video_name} #{mp4_name}`
-   # f = File.new("#{uuid}.mp4", "r")
-   # resp_mp4 = client.put_file("#{uuid}.mp4", f)
-
-   # `ffmpeg -i #{mp4_name} -i #{audio_name} -c:v copy -c:a aac -strict #{resp_mp4['path']}`
-   # f = File.new("#{uuid}.mp4", "r")
-   # resp_mp4 = client.put_file("#{uuid}.mp4", f)
-    puts `ls public/videos`
-    puts `pwd`
     `ffmpeg -i uploads/#{uuid}.webm uploads/#{uuid}.mp4`
     `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/#{uuid}.wav -c:v copy -c:a aac -strict experimental public/videos/#{uuid}.mp4`
 
     f = File.new("public/videos/#{uuid}.mp4", "r")
     resp_mp4 = client.put_file("#{uuid}.mp4", f)
   else
-    directory = "#{settings.root}/public/videos"
-    puts directory
 
     #audio
     audio_type = params['audio'][:type].split("/").last
@@ -72,12 +59,8 @@ post "/upload" do
       f.write(params['audio'][:tempfile].read)
     end
 
-    puts `ls public/videos`
-    puts `pwd`
-
     `ffmpeg -i uploads/#{uuid}.#{video_type} uploads/#{uuid}.mp4`
     `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/"#{uuid}_1".#{audio_type} -c:v copy -c:a aac -strict -2 experimental #{uuid}.mp4`
-    #`ffmpeg -i uploads/#{uuid}.#{video_type} -i uploads/"#{uuid}_1".#{audio_type} #{uuid}.mp4`
 
     f = File.new("#{uuid}.mp4", "r")
     resp_mp4 = client.put_file("#{uuid}.mp4", f)

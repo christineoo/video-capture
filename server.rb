@@ -49,6 +49,7 @@ post "/upload" do
 
     f = File.new("public/videos/#{uuid}.mp4", "r")
     resp_mp4 = client.put_file("#{uuid}.mp4", f)
+    uuid+".mp4"
   else
 
     #audio
@@ -58,21 +59,14 @@ post "/upload" do
     File.open("uploads/#{uuid}_1.#{audio_type}", "w") do |f|
       f.write(params['audio'][:tempfile].read)
     end
-
-    `ffmpeg -i uploads/#{uuid}.#{video_type} uploads/#{uuid}.mp4`
-    `ffmpeg -i uploads/#{uuid}.mp4 -i uploads/"#{uuid}_1".#{audio_type} -c:v copy -c:a aac -strict experimental public/videos/#{uuid}.mp4`
-
-    f = File.new("public/videos/#{uuid}.mp4", "r")
-    resp_mp4 = client.put_file("#{uuid}.mp4", f)
-
+    uuid+".#{video_type}"
   end
-  uuid
 end
 
 get "/video/:uuid" do
   @uuid = params[:uuid]
-  final_video = client.get_file("/#{@uuid}.mp4")
+  final_video = client.get_file("/#{@uuid}")
   open("#{@uuid}", 'w') {|f| f.puts final_video }
-  send_file "#{@uuid}", :filename => "#{@uuid}.mp4", :type => "Application/video"
+  send_file "#{@uuid}", :filename => "#{@uuid}", :type => "Application/video"
   #erb :video
 end

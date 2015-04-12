@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script type="text/javascript" src="/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="/RecordRTC.js"></script>
+    <script type="text/javascript" src="/app.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
 
   <body>
-    <video src="/videos/<%= @uuid %>.mp4" controls></video>
+  <p>File Name: <%= @file_name %></p>
+  <% if @status_message %>
+    <p> Status: <%= @status_message %></p>
+  <% end %>
+    <button id='download_button'>Download Video File</button>
   </body>
 </html>

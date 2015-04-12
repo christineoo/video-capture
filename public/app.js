@@ -25,8 +25,20 @@ $(document).ready(function(){
     }
   };
 
+  // Download button
+  $("#download_button").click(function(){
+     console.log("hereeee")
+     if (!isFirefox){
+      var file_name = window.location.pathname.substring(7,47)
+     }
+     else {
+       var file_name = window.location.pathname.substring(7,48)
+     }
+     window.location.href = "/video/"+file_name+"/download";
+  });
+
+  if (window.location.pathname == "/"){
   // record the video and audio
-  //navigator.getUserMedia({audio: true, video: { mandatory: {}, optional: []}}, function(pStream) {
   navigator.getUserMedia({audio: true, video: true}, function(pStream) {
     stream = pStream;
     // setup video
@@ -43,7 +55,7 @@ $(document).ready(function(){
     // update UI
     $("#record_button").show();
   }, function(){});
-
+  }
   // start recording
   var startRecording = function() {
 
@@ -178,16 +190,19 @@ $(document).ready(function(){
   // Upload button
   $("#upload_button").click(function(){
     var request = new XMLHttpRequest();
-
+    var uuid = $("#uuid").text();
     request.onreadystatechange = function () {
       if (request.readyState == 4 && request.status == 200) {
         window.location.href = "/video/"+request.responseText;
       }
     };
 
-    request.open('POST', "/upload");
+    request.open('POST', "/upload/"+uuid.substring(11,50));
     request.send(formData);
+    //request.timeout = 1000*60*10;
+    //request.ontimeout = function () { alert("Timed out!!!"); }
   });
+
 });
 
 

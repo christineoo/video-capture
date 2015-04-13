@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'uuid'
 require 'dropbox_sdk'
-require 'pry'
 
 # Get your app key and secret from the Dropbox developer website
 APP_KEY = 'tde962n2ap70xcs'

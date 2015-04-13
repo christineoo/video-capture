@@ -25,9 +25,9 @@ $(document).ready(function(){
     }
   };
 
+  $("#download_button").show();
   // Download button
   $("#download_button").click(function(){
-     console.log("hereeee")
      if (!isFirefox){
       var file_name = window.location.pathname.substring(7,47)
      }
@@ -38,23 +38,29 @@ $(document).ready(function(){
   });
 
   if (window.location.pathname == "/"){
-  // record the video and audio
-  navigator.getUserMedia({audio: true, video: true}, function(pStream) {
-    stream = pStream;
-    // setup video
-    video = $("video.recorder")[0];
+    // record the video and audio
+    navigator.getUserMedia({audio: true, video: true}, function(pStream) {
+      stream = pStream;
+      // setup video
+      video = $("video.recorder")[0];
 
-    video.src = window.URL.createObjectURL(stream);
-    video.width = videoWidth;
-    video.height = videoHeight;
+      video.src = window.URL.createObjectURL(stream);
+      video.width = videoWidth;
+      video.height = videoHeight;
 
-    // init recorders
-    audio_recorder = RecordRTC(stream, { type: "audio", bufferSize: 16384 });
-    video_recorder = RecordRTC(stream, videoOptions);
+      // init recorders
+      audio_recorder = RecordRTC(stream, { type: "audio", bufferSize: 16384 });
+      video_recorder = RecordRTC(stream, videoOptions);
 
-    // update UI
-    $("#record_button").show();
-  }, function(){});
+      // update UI
+      $("#record_button").show();
+    },
+    function(err){
+      //if user refuse to share their camera/speaker
+      if(err.name == "PermissionDeniedError"){
+        $("#permission_error").text("Looks like you refuse to share your camera & speaker :( ")
+      }
+    });
   }
   // start recording
   var startRecording = function() {

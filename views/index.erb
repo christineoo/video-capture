@@ -8,6 +8,8 @@
   </head>
 
   <body>
+    <p id="uuid">File name: <%= @uuid %></p>
+    <p id="permission_error"></p>
     <!-- Wrapper for video elements -->
     <div id='players'>
       <video class='recorder' loop muted autoplay></video>
@@ -17,7 +19,6 @@
     <button id='record_button'>Start recording</button>
     <button id='play_button'>Play</button>
     <button id='upload_button'>Upload</button>
-    <p id="uuid">File name: <%= @uuid %></p>
   </body>
 
 </html>

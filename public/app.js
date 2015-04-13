@@ -110,7 +110,6 @@ $(document).ready(function(){
       video_payer.id = "video-player";
       //video_payer.src = URL.createObjectURL(video_blob);
       video_payer.src = video_blob;
-      video_payer.controls = true;
       $("#players").append(video_payer);
       onStopRecording();
     });
@@ -199,8 +198,6 @@ $(document).ready(function(){
 
     request.open('POST', "/upload/"+uuid.substring(11,50));
     request.send(formData);
-    //request.timeout = 1000*60*10;
-    //request.ontimeout = function () { alert("Timed out!!!"); }
   });
 
 });

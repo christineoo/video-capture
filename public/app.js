@@ -108,7 +108,6 @@ $(document).ready(function(){
       
       var video_payer = document.createElement("video");
       video_payer.id = "video-player";
-      //video_payer.src = URL.createObjectURL(video_blob);
       video_payer.src = video_blob;
       $("#players").append(video_payer);
       onStopRecording();
@@ -117,11 +116,9 @@ $(document).ready(function(){
     function onStopRecording(){
       video_recorder.getDataURL(function(videoDataURL) {
         formData.append("video", video_recorder.blob);
-        //postFiles(audioDataURL, videoDataURL);
       });
       audio_recorder.getDataURL(function(audioDataURL) {
         formData.append("audio", audio_recorder.blob);
-        //postFiles(audioDataURL, videoDataURL);
       });
     }
 

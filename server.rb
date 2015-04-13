@@ -18,6 +18,7 @@ post "/upload/:uuid" do
   puts params.inspect
   #video
   video_type = params['video'][:type].split("/").last
+  puts params['video'][:type]
 
   File.open("uploads/#{uuid}.#{video_type}", "w") do |f|
     f.write(params['video'][:tempfile].read)

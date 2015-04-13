@@ -82,7 +82,7 @@ get "/video/:file_name/download" do
     send_file "#{@file_name}", :filename => "#{@file_name}", :type => "Application/video"
     rescue DropboxError => e
       if e.http_response.code == '404'
-        @status_message = "Please wait, your video file is being converted to video file"
+        @status_message = "Please wait, your video file is being converted."
       end
   end
   erb :video
